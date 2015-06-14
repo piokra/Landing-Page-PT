@@ -2,8 +2,19 @@
 
 
 
-{% block content %}
+{% block first %}
+
+
 
 {{hello}}
+s
+{{forml}}
+{% csrf_token %}
+<form method="POST" action = "#">{% csrf_token %}
+{{form.as_p}} {% csrf_token %}
+
+<p><input type="submit" value="Subscribe" class="btn-btn-success"></p>
+</form>
+{{formr}}
 
 {%endblock%}

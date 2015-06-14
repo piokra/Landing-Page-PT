@@ -2,28 +2,46 @@ from django.shortcuts import render
 from .forms import EmailForm
 from .models import Subscription, Post
 from django.template import Context,Template
+from django.template.context_processors import csrf
 def home(request):
 
-	form = EmailForm(request.POST or None)
-	posts = Post.objects.all()[:5]
-	side = 0
-	string = ""
-	for e in reversed(posts):
-		side+=1
-		title = e.title
-		subtitle = e.author
-		image = e.image
-		content = e.short_content
-		string+=construct_post(image,title,subtitle,content,side)
-	context = Context({"hello": string}, autoescape=False)
-
-	if form.is_valid():
-		print request
-		ip = request.META.get("REMOTE_ADDR")
-		new_join, created = Subscription.objects.get_or_create(ip="hello", email=form.cleaned_data['email'])
-
+	#form = EmailForm(request.POST or None)
+	#posts = Post.objects.all()[::1]
+	#side = 0
+	#string = ""
+	#forml, formr = construct_subscription()
+	#for e in reversed(posts):
+	#	side+=1
+	#	title = e.title
+#		subtitle = e.author
+#		image = e.image
+#		content = e.short_content
+#		string+=construct_post(image,title,subtitle,content,side)
+#	context = Context({"hello": string, "form": form, "forml": forml, "formr": formr}, autoescape=False)
+#	context.update(csrf(request))
+#	if form.is_valid():
+#		print request
+#		ip = request.META.get("REMOTE_ADDR")
+#		new_join, created = Subscription.objects.get_or_create(ip="hello", email=form.cleaned_data['email'])
+#
 	template = "home.html"
-	return render(request,template,context);
+	return render(template, {}, request);
+
+def construct_subscription():
+	ret = ""
+	ret += '<div class="subscription-block">'
+	ret += '<h2 class="featurette-heading">'
+	ret += 'Subscribe now!'
+	ret += '<span class="text-muted"><br>'
+	ret += 'Be the first to join the fight'
+	ret += '</span></h2>'
+	ret += "<!-- form goes here -->"
+	
+	post = '</div>'
+	post += '<hr class="featurette-divider">'
+	return ret, post
+
+
 
 def construct_post(img, title, subtitle, content, side):
 	if(side%2==0):
